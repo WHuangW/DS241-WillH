@@ -1,0 +1,12 @@
+```{r}
+library(tidyverse)
+library(lubridate)
+library(glue)
+library(scales)
+library(ggrepel)
+library(DT)
+```
+```{r}
+read.csv (CU_ACAD_DEPT_WHEN_OFF_ENRL_22740)
+df2=df1 %>% select(course_id)
+```

@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+[10:53 AM] Shreejit Poudyal - poudyas
+---
+output: html_notebook
+---
+```{r}
+library(tidyverse)
+library(readr)
+library(lubridate)
+library(janitor)
+library(here)
+```
+```{r}
+df4 = df1 %>% select(rideable_type, start=started_at, end=end_at) %>%
+pivot_longer(cols=start:end, names_to="type", valuess_to="time") %>%
+  arrange(time) %>%
+  mutate(inc=case_when)
+  type="start"-1
+  type="end"- -1
+  ), riders=cumsum(inc))
+``` 
+```{r}
+df4 %>% mutate(day=day(time)) ggplot(aes(time,riders,color=day))+geom_line(size=5,alpha=.02) +factor_wrap(-day)
+```
+```{r}
+main <- read_csv("~/DS 241/bikedata/202109-capitalbikeshare-tripdata.csv")
+```##### Date prepping```{r}
+hourly <- main %>%
+mutate(
+started_at = mdy_hm(started_at),
+ended_at = mdy_hm(ended_at)) %>%
+filter(mday(started_at)==1)
+```
+```{r}
+num_rentals <- hourly %>%
+mutate(
+hr = hour(started_at)) %>%
+count(hr)ggplot(num_rentals, aes(hr, n))+
+geom_line()+
+labs(
+x="Hour of the day",
+y="Number of bikes rented",
+)
+```
+```{r}
+haversine <- function(start_lng, start_lat, end_lng, end_lat, round = 3)
+{
+# convert to radians
+long1 = start_lng * pi / 180
+lat1 = start_lat * pi / 180
+long2 = end_lng * pi / 180
+lat2 = end_lat * pi / 180
+R = 6371 # Earth's mean radius in km
+a = sin((lat2 - lat1)/2)^2 + cos(lat1) * cos(lat2) * sin((long2 - long1)/2)^2
+d = R * 2 * asin(sqrt(a))
+return(round(d,round)) # distance in km
+}
+```
+```{r}
+hourly <- hourly %>%
+mutate(distance = haversine(start_lng, start_lat, end_lng, end_lat))ggplot(hourly, aes(hour(started_at), distance))+
+geom_jitter(alpha=0.3)+
+labs(
+x="Hour of the day",
+y="Distance traveled",
+)
+```
+
+
